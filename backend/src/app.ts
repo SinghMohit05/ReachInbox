@@ -23,7 +23,18 @@ export const createApp = (): Express => {
   // CORS setup
   app.use(
     cors({
-      origin: [env.FRONTEND_URL, 'http://localhost:5173', 'http://127.0.0.1:5173'],
+      origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (
+          origin === env.FRONTEND_URL ||
+          origin === 'http://localhost:5173' ||
+          origin === 'http://127.0.0.1:5173' ||
+          origin.endsWith('.vercel.app')
+        ) {
+          return callback(null, true);
+        }
+        return callback(null, true);
+      },
       credentials: true,
     }),
   );

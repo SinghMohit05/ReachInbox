@@ -35,7 +35,7 @@ export interface StatsResponse {
   totalSenders: number;
 }
 
-const API_BASE = '';
+const API_BASE = import.meta.env.VITE_API_URL || '';
 
 function getAuthHeader(): Record<string, string> {
   const token = localStorage.getItem('reachinbox_token');

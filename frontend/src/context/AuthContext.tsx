@@ -3,6 +3,8 @@ import { User, AuthContextType } from '../types/auth';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -23,7 +25,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch('/auth/me', {
+      const res = await fetch(`${API_BASE}/auth/me`, {
         headers: getAuthHeaders(),
         credentials: 'include',
       });
@@ -56,12 +58,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loginWithGoogle = () => {
     // Redirect directly to backend Google OAuth endpoint
-    window.location.href = '/auth/google';
+    window.location.href = `${API_BASE}/auth/google`;
   };
 
   const logout = async () => {
     try {
-      await fetch('/auth/logout', {
+      await fetch(`${API_BASE}/auth/logout`, {
         method: 'POST',
         headers: getAuthHeaders(),
         credentials: 'include',
