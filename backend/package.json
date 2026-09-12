@@ -1,0 +1,54 @@
+{
+  "name": "reachinbox-backend",
+  "version": "1.0.0",
+  "description": "ReachInbox Email Scheduler Backend API and Worker Service",
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts",
+    "clean": "rimraf dist"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@bull-board/api": "^9.10.0",
+    "@bull-board/express": "^9.10.0",
+    "@elastic/elasticsearch": "^8.13.0",
+    "@prisma/client": "^5.22.0",
+    "@slack/web-api": "^8.1.1",
+    "bullmq": "^6.3.4",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "ioredis": "^5.4.1",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^10.0.8",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "pg": "^8.12.0",
+    "prisma": "5.22.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@embedded-postgres/windows-x64": "^18.4.0-beta.17",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^20.14.9",
+    "@types/nodemailer": "^8.0.1",
+    "@types/passport": "^1.0.17",
+    "@types/passport-google-oauth20": "^2.0.17",
+    "@types/pg": "^8.11.6",
+    "embedded-postgres": "^18.4.0-beta.17",
+    "redis-memory-server": "^0.17.1",
+    "rimraf": "^5.0.7",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.4"
+  }
+}

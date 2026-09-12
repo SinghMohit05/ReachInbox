@@ -1,0 +1,38 @@
+{
+  "name": "reachinbox-email-scheduler",
+  "version": "1.0.0",
+  "description": "Production-grade distributed email scheduler with BullMQ, Redis, PostgreSQL, and Express",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c green,cyan \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "build": "npm run build --prefix backend && npm run build --prefix frontend",
+    "build:backend": "npm run build --prefix backend",
+    "build:frontend": "npm run build --prefix frontend",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
+  },
+  "keywords": [
+    "reachinbox",
+    "email-scheduler",
+    "bullmq",
+    "redis",
+    "postgresql",
+    "express",
+    "react",
+    "tailwind"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
+  }
+}

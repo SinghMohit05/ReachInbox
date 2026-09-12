@@ -1,0 +1,97 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum EmailStatus {
+  scheduled
+  processing
+  sent
+  failed
+  cancelled
+}
+
+model User {
+  id               String            @id @default(uuid())
+  googleId         String?           @unique
+  name             String
+  email            String            @unique
+  avatarUrl        String?
+  senders          Sender[]
+  emails           Email[]
+  slackConnections SlackConnection[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@map("users")
+}
+
+model Sender {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email       String
+  displayName String
+  smtpHost    String?
+  smtpPort    Int?
+  smtpUser    String?
+  smtpPass    String?
+  smtpSecure  Boolean  @default(false)
+  enabled     Boolean  @default(true)
+  emails      Email[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, email])
+  @@index([userId])
+  @@map("senders")
+}
+
+model Email {
+  id             String      @id @default(uuid())
+  userId         String
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         Sender      @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  recipient      String
+  subject        String
+  body           String      @db.Text
+  status         EmailStatus @default(scheduled)
+  scheduledAt    DateTime
+  sentAt         DateTime?
+  failedAt       DateTime?
+  errorMessage   String?     @db.Text
+  previewUrl     String?     @db.Text
+  jobId          String?
+  idempotencyKey String      @unique
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@index([userId, status])
+  @@index([senderId, status])
+  @@index([status, scheduledAt])
+  @@index([jobId])
+  @@map("emails")
+}
+
+model SlackConnection {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamId      String
+  teamName    String
+  channelId   String?
+  channelName String?
+  accessToken String   @db.Text
+  enabled     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, teamId])
+  @@index([userId])
+  @@map("slack_connections")
+}
